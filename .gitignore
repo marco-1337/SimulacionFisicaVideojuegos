@@ -35,9 +35,14 @@
 bin/**
 common/**
 .vs/**
+.vscode/**
 .vs/game/FileContentIndex**
 skeleton/debug/**
 /skeleton/.vs/game/**
+
+out/**
+
+CMakePresets.json
 
 # Zip files
 *.zip
