@@ -30,6 +30,7 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
+std::vector<RenderItem*> gItems = std::vector<RenderItem*>(); 
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -54,7 +55,31 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-	}
+
+	// Esfera central
+
+	PxTransform *_transform = new PxTransform(PxVec3(0., 0., 0.));
+
+	PxSphereGeometry _geometry = PxSphereGeometry(1.0f);
+	PxShape *_shape = CreateShape(_geometry);
+
+	RenderItem *_item = new RenderItem(_shape, _transform, PxVec4(1., 1., 1., 1.));
+	gItems.push_back(_item);
+
+	_transform = new PxTransform(PxVec3(10., 0., 0.));
+	_item = new RenderItem(_shape, _transform, PxVec4(1., 0., 0., 1.));
+	gItems.push_back(_item);
+
+	_transform = new PxTransform(PxVec3(0., 10., 0.));
+	_item = new RenderItem(_shape, _transform, PxVec4(0., 1., 0., 1.));
+	gItems.push_back(_item);
+	
+	_transform = new PxTransform(PxVec3(0., 0., 10.));
+	_item = new RenderItem(_shape, _transform, PxVec4(0., 0., 1., 1.));
+	gItems.push_back(_item);
+
+	for(auto elem : gItems) RegisterRenderItem(elem);
+}
 
 
 // Function to configure what happens in each step of physics
@@ -72,6 +97,8 @@ void stepPhysics(bool interactive, double t)
 // Add custom code to the begining of the function
 void cleanupPhysics(bool interactive)
 {
+	for(auto elem : gItems) DeregisterRenderItem(elem);
+
 	PX_UNUSED(interactive);
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
