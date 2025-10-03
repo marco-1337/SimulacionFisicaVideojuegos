@@ -20,6 +20,7 @@ set(MY_SOURCE_FILES
     "main.cpp" 
     "callbacks.cpp"
     "RenderUtils.cpp"
+    "Particle.cpp"
     
     "Render/Camera.cpp"
     "Render/Render.cpp")

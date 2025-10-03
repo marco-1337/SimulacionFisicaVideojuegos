@@ -71,7 +71,7 @@ void idleCallback()
 	glutPostRedisplay();
 }
 
-float stepTime = 0.0f;
+float stepTime = 0.001f;
 //#define FIXED_STEP
 
 void renderCallback()

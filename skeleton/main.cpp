@@ -10,6 +10,9 @@
 
 #include <iostream>
 
+#include "Particle.h"
+#include <list>
+
 std::string display_text = "This is a test";
 
 
@@ -30,7 +33,8 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
-std::vector<RenderItem*> gItems = std::vector<RenderItem*>(); 
+std::vector<RenderItem*> gAxis = std::vector<RenderItem*>(); 
+std::list<Particle*> gParticles = std::list<Particle*>();
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -59,26 +63,23 @@ void initPhysics(bool interactive)
 	// Esfera central
 
 	PxTransform *_transform = new PxTransform(PxVec3(0., 0., 0.));
-
 	PxSphereGeometry _geometry = PxSphereGeometry(1.0f);
 	PxShape *_shape = CreateShape(_geometry);
 
 	RenderItem *_item = new RenderItem(_shape, _transform, PxVec4(1., 1., 1., 1.));
-	gItems.push_back(_item);
+	gAxis.push_back(_item);
 
 	_transform = new PxTransform(PxVec3(10., 0., 0.));
 	_item = new RenderItem(_shape, _transform, PxVec4(1., 0., 0., 1.));
-	gItems.push_back(_item);
+	gAxis.push_back(_item);
 
 	_transform = new PxTransform(PxVec3(0., 10., 0.));
 	_item = new RenderItem(_shape, _transform, PxVec4(0., 1., 0., 1.));
-	gItems.push_back(_item);
+	gAxis.push_back(_item);
 	
 	_transform = new PxTransform(PxVec3(0., 0., 10.));
 	_item = new RenderItem(_shape, _transform, PxVec4(0., 0., 1., 1.));
-	gItems.push_back(_item);
-
-	for(auto elem : gItems) RegisterRenderItem(elem);
+	gAxis.push_back(_item);
 }
 
 
@@ -87,6 +88,17 @@ void initPhysics(bool interactive)
 // t: time passed since last call in milliseconds
 void stepPhysics(bool interactive, double t)
 {
+	for (std::list<Particle*>::iterator it = gParticles.begin(); it != gParticles.end();) {
+		
+		(*it)->integrate(t);
+
+		if ((*it)->isDead()) {
+			Particle *aux = *it;
+			it = gParticles.erase(it);
+			delete aux;
+		} else ++it;
+	}
+
 	PX_UNUSED(interactive);
 
 	gScene->simulate(t);
@@ -97,7 +109,14 @@ void stepPhysics(bool interactive, double t)
 // Add custom code to the begining of the function
 void cleanupPhysics(bool interactive)
 {
-	for(auto elem : gItems) DeregisterRenderItem(elem);
+	for(auto elem : gAxis) {
+		DeregisterRenderItem(elem);
+		delete elem;
+	}
+
+	for(auto particle : gParticles) {
+		delete particle;
+	}
 
 	PX_UNUSED(interactive);
 
@@ -111,7 +130,7 @@ void cleanupPhysics(bool interactive)
 	transport->release();
 	
 	gFoundation->release();
-	}
+}
 
 // Function called when a key is pressed
 void keyPress(unsigned char key, const PxTransform& camera)
@@ -122,6 +141,16 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{
 	//case 'B': break;
 	//case ' ':	break;
+	
+	case 'I':
+		gParticles.push_back(new Particle(Vector3(0.0), Vector3(10.0, 10.0, -5.0), Vector3(0.0, -9.0, 0.0), Particle::Integrator::EULER));
+		break;
+	case 'O':
+		gParticles.push_back(new Particle(Vector3(0.0), Vector3(10.0, 10.0, -5.0), Vector3(0.0, -9.0, 0.0), Particle::Integrator::SYMPLECTIC_EULER));
+		break;
+	case 'P':
+		gParticles.push_back(new Particle(Vector3(0.0), Vector3(10.0, 10.0, -5.0), Vector3(0.0, -9.0, 0.0), Particle::Integrator::VERLET));
+		break;
 	case ' ':
 	{
 		break;
