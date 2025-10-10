@@ -14,24 +14,33 @@ if(MSVC)
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif()
 
-# Código fuente de la aplicación, añadirlos como si la raiz estuviera ya en /skeleton 
+# Código fuente de la aplicación, añadirlos como si la raiz estuviera ya en /src 
 
 set(MY_SOURCE_FILES 
     "main.cpp" 
     "callbacks.cpp"
     "RenderUtils.cpp"
-    "Particle.cpp"
+
+    "Physics/Entity.cpp"
+    "Physics/IntegrableEntity.cpp"
+    "Physics/Particle.cpp"
     
     "Render/Camera.cpp"
-    "Render/Render.cpp")
+    "Render/Render.cpp"
+    
+    "Utils/Scene.cpp"
+    "Utils/Scene0.cpp"
+    "Utils/Scene1.cpp")
 
 # Include directories
 
-set(MY_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/skeleton)
+set(MY_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 set(MY_INCLUDE_DIRECTORIES
-    ${MY_SOURCE_DIR}
-    ${MY_SOURCE_DIR}/Render)
+    "${MY_SOURCE_DIR}"
+    "${MY_SOURCE_DIR}/Physics"
+    "${MY_SOURCE_DIR}/Render"
+    "${MY_SOURCE_DIR}/Utils")
 
 set(APPENDED_SOURCE_FILES "")
 
