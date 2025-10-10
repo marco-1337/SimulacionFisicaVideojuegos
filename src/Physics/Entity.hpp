@@ -8,6 +8,8 @@ using Vector3 = physx::PxVec3;
 using Vector4 = physx::PxVec4;
 using Shape = physx::PxShape;
 
+extern const Vector3 GRAVITY;
+
 class Entity {
 public:
     Entity(Vector3 position, Shape *shape, Vector4 color);

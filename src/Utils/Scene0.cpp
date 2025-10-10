@@ -1,49 +1,34 @@
 #include "Scene0.hpp"
 
-#include "Entity.hpp"
+#include "Particle.hpp"
 #include "RenderUtils.hpp"
 
 using namespace physx;
 
 Scene0::Scene0() {
 
-    PxTransform *transform = new PxTransform(PxVec3(0., 0., 0.));
-    transformList.push_back(transform);
-	PxSphereGeometry geometry = PxSphereGeometry(1.0f);
+	PxSphereGeometry geometry = PxSphereGeometry(0.5f);
 	PxShape *shape = CreateShape(geometry);
 
-	RenderItem *item = new RenderItem(shape, transform, PxVec4(1., 1., 1., 1.));
-	axis.push_back(item);
+    entities.push_back(new Particle(Vector3(0., 0., 0), shape, Vector4(1.), Vector3(0.), Vector3(0.), 
+        Integrator::EULER, 1., 0., false));
 
-	transform = new PxTransform(PxVec3(10., 0., 0.));
-    transformList.push_back(transform);
-	item = new RenderItem(shape, transform, PxVec4(1., 0., 0., 1.));
-	axis.push_back(item);
+    entities.push_back(new Particle(Vector3(10., 0., 0), shape, Vector4(1., 0., 0., 1.), Vector3(0.), Vector3(0.), 
+        Integrator::EULER, 1., 0., false));
+    entities.push_back(new Particle(Vector3(5., 0., 0), shape, Vector4(1., 0., 0., 1.), Vector3(0.), Vector3(0.), 
+        Integrator::EULER, 1., 0., false));
 
-	transform = new PxTransform(PxVec3(0., 10., 0.));
-    transformList.push_back(transform);
-    item = new RenderItem(shape, transform, PxVec4(0., 1., 0., 1.));
-	axis.push_back(item);
-	
-	transform = new PxTransform(PxVec3(0., 0., 10.));
-    transformList.push_back(transform);
-    item = new RenderItem(shape, transform, PxVec4(0., 0., 1., 1.));
-	axis.push_back(item);
+    entities.push_back(new Particle(Vector3(0., 10., 0), shape, Vector4(0., 1., 0., 1.), Vector3(0.), Vector3(0.), 
+        Integrator::EULER, 1., 0., false));
+    entities.push_back(new Particle(Vector3(0., 5., 0), shape, Vector4(0., 1., 0., 1.), Vector3(0.), Vector3(0.), 
+        Integrator::EULER, 1., 0., false));
+
+    entities.push_back(new Particle(Vector3(0., 0., 10.), shape, Vector4(0., 0., 1., 1.), Vector3(0.), Vector3(0.), 
+        Integrator::EULER, 1., 0., false));
+    entities.push_back(new Particle(Vector3(0., 0., 5.), shape, Vector4(0., 0., 1., 1.), Vector3(0.), Vector3(0.), 
+        Integrator::EULER, 1., 0., false));
+
+    shape->release();
 }
 
-Scene0::~Scene0() {
-    for (RenderItem *e : axis) {
-        e->release();
-    }  
-    for (PxTransform *e : transformList) {
-        delete e;
-        e = nullptr;
-    }
-}
-
-void
-Scene0::enableRendering() {
-    for (RenderItem *e : axis) {
-        RegisterRenderItem(e);
-    }
-}
+Scene0::~Scene0() {}

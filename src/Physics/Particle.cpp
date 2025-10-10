@@ -7,10 +7,11 @@
 using namespace physx;
 
 Particle::Particle(Vector3 position, Shape *shape, Vector4 color, Vector3 velocity, Vector3 acceleration, 
-    Integrator integrator, double damping, double timeToDie)
+    Integrator integrator, double damping, double timeToDie, bool deleteable)
 : IntegrableEntity(position, shape, color, velocity, acceleration, integrator, damping), 
 timeToDie(timeToDie),
-aliveTime(0.) {}
+aliveTime(0.),
+deleteable(deleteable) {}
 
 Particle::~Particle() {}
 
@@ -23,5 +24,5 @@ Particle::update(double t) {
 
 bool
 Particle::needToDelete() {
-    return aliveTime > timeToDie;
+    return aliveTime > timeToDie && deleteable;
 }

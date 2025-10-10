@@ -73,7 +73,6 @@ void initPhysics(bool interactive)
 	currentScene->enableRendering();
 }
 
-
 // Function to configure what happens in each step of physics
 // interactive: true if the game is rendering, false if it offline
 // t: time passed since last call in milliseconds

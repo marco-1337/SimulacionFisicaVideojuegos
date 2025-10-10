@@ -24,6 +24,7 @@ set(MY_SOURCE_FILES
     "Physics/Entity.cpp"
     "Physics/IntegrableEntity.cpp"
     "Physics/Particle.cpp"
+    "Physics/Projectile.cpp"
     
     "Render/Camera.cpp"
     "Render/Render.cpp"
