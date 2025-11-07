@@ -14,3 +14,8 @@ Projectile::Projectile(Vector3 position, Shape *shape, Vector4 color, Integrator
 
     simulatedMass = mass * pow(speed / simulatedSpeed, 2);
 }
+
+double
+Projectile::getMass() const {
+    return mass/simulatedMass; 
+}
