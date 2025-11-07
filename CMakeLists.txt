@@ -23,15 +23,25 @@ set(MY_SOURCE_FILES
 
     "Physics/Entity.cpp"
     "Physics/IntegrableEntity.cpp"
-    "Physics/Particle.cpp"
-    "Physics/Projectile.cpp"
+    "Physics/GravityForceGenerator.cpp"
+    "Physics/Petanque.cpp"
+
+    "Physics/Particles/Particle.cpp"
+    "Physics/Particles/Projectile.cpp"
+    "Physics/Particles/ParticleSystem.cpp"
+    "Physics/Particles/ParticleGenerator.cpp"
+    "Physics/Particles/GaussianParticleGenerator.cpp"
+    "Physics/Particles/DustDiskParticleGenerator.cpp"
     
     "Render/Camera.cpp"
     "Render/Render.cpp"
-    
+
+    "Utils/EntityContainer.cpp"
     "Utils/Scene.cpp"
     "Utils/Scene0.cpp"
-    "Utils/Scene1.cpp")
+    "Utils/Scene1.cpp"
+    "Utils/Scene2.cpp"
+    "Utils/GameScene.cpp")
 
 # Include directories
 
@@ -40,6 +50,7 @@ set(MY_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(MY_INCLUDE_DIRECTORIES
     "${MY_SOURCE_DIR}"
     "${MY_SOURCE_DIR}/Physics"
+    "${MY_SOURCE_DIR}/Physics/Particles"
     "${MY_SOURCE_DIR}/Render"
     "${MY_SOURCE_DIR}/Utils")
 

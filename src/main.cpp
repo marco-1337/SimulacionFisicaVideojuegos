@@ -13,6 +13,8 @@
 #include "Scene.hpp"
 #include "Scene0.hpp"
 #include "Scene1.hpp"
+#include "Scene2.hpp"
+#include "GameScene.hpp"
 
 #include "Particle.hpp"
 #include <list>
@@ -66,10 +68,12 @@ void initPhysics(bool interactive)
 
 	gScenes.push_back(new Scene0());
 	gScenes.push_back(new Scene1());
+	gScenes.push_back(new Scene2());
+	gScenes.push_back(new GameScene());
 
 	ClearRenderItems();
 
-	currentScene = gScenes[0];
+	currentScene = gScenes[3];
 	currentScene->enableRendering();
 }
 
