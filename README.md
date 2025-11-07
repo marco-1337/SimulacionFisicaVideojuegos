@@ -1,4 +1,18 @@
 # SimulacionFisicaVideojuegos
+
+Como compilar y ejecutar:
+
+Se requiere CMake y el compilador de Visual Studio, soporte C++17
+En la raíz del repositorio ejecutar estos dos comandos, importante desde la CMD de Windows o PowerShell, si se usa GitBash habrá problemas ya que este proyecto está hecho para compilar con Visual Studio.
+
+`cmake -S . -B ./out/build`
+
+`cmake --build ./out/build --config Debug`
+
+El exe se generará con el nombre "game_DEBUG.exe" en la carpeta /bin
+
+---
+
 Repositorio de las prácticas de la asignatura de Simulación Física de Videojuegos
 
 En la carpeta skeleton estará vuestro código fuente
