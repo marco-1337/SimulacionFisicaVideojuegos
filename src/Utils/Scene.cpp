@@ -1,20 +1,18 @@
 #include "Scene.hpp"
-#include "EntityContainer.hpp"
-#include "EntityContainer.hpp"
 
-Scene::Scene()
-: sceneEntities(std::make_shared<EntityContainer>()),
-gravityForce(std::make_unique<GravityForceGenerator>(GRAVITY)) {
-    gravityForce->registerEntityGroup(sceneEntities);
-}
+#include "Entity.hpp"
+#include "ParticleSystem.hpp"
+
+Scene::Scene(): sceneEntities(), particleSystems() {}
 
 void
 Scene::update(double dt) {
-    gravityForce->applyForce();
-    sceneEntities->update(dt);
+    sceneEntities.foreachAlive( [dt](Entity& e) { e.update(dt); });
+    particleSystems.foreachAlive( [dt](ParticleSystem& pSys) { pSys.update(dt); } );
 }
 
 void
 Scene::enableRendering() {
-    sceneEntities->enableRendering();
+    sceneEntities.foreachAlive( [](Entity& e) { e.enableRender(); });
+    particleSystems.foreachAlive( [](ParticleSystem& pSys) { pSys.enabledRender(); } );
 }

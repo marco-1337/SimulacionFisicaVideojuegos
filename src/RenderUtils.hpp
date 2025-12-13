@@ -40,7 +40,7 @@ public:
 		++references;
 	}
 
-	void release()
+	bool release()
 	{
 		--references;
 		if (references == 0)
@@ -48,7 +48,10 @@ public:
 			DeregisterRenderItem(this);
 			shape->release();
 			delete this;
+			return true;
 		}
+
+		return false;
 	}
 
 public:

@@ -11,12 +11,8 @@
 #include <iostream>
 
 #include "Scene.hpp"
-#include "Scene0.hpp"
 #include "Scene1.hpp"
-#include "Scene2.hpp"
-#include "GameScene.hpp"
 
-#include "Particle.hpp"
 #include <list>
 
 std::string display_text = "This is a test";
@@ -66,14 +62,11 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	gScenes.push_back(new Scene0());
-	gScenes.push_back(new Scene1());
-	gScenes.push_back(new Scene2());
-	gScenes.push_back(new GameScene());
-
 	ClearRenderItems();
 
-	currentScene = gScenes[3];
+	gScenes.push_back(new Scene1());
+
+	currentScene = gScenes[0];
 	currentScene->enableRendering();
 }
 

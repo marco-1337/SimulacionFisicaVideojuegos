@@ -5,7 +5,7 @@ project(SIM_3_GDV VERSION 1.0 LANGUAGES CXX)
 
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release;Checked;Profile" CACHE STRING "" FORCE)
 
-# Selecciona la versión C++20 del estándar (sin extensiones)
+# Selecciona la versión C++17 del estándar (sin extensiones)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -21,27 +21,19 @@ set(MY_SOURCE_FILES
     "callbacks.cpp"
     "RenderUtils.cpp"
 
-    "Physics/Entity.cpp"
-    "Physics/IntegrableEntity.cpp"
-    "Physics/GravityForceGenerator.cpp"
-    "Physics/Petanque.cpp"
+    "Components/HeightDeletableComponent.cpp"
+    "Components/ParticleComponent.cpp"
+    "Components/TimeDeletableComponent.cpp"
 
-    "Physics/Particles/Particle.cpp"
-    "Physics/Particles/Projectile.cpp"
-    "Physics/Particles/ParticleSystem.cpp"
-    "Physics/Particles/ParticleGenerator.cpp"
-    "Physics/Particles/GaussianParticleGenerator.cpp"
-    "Physics/Particles/DustDiskParticleGenerator.cpp"
-    
+    "ParticleSystem/ParticleSystem.cpp"
+
     "Render/Camera.cpp"
     "Render/Render.cpp"
 
-    "Utils/EntityContainer.cpp"
-    "Utils/Scene.cpp"
-    "Utils/Scene0.cpp"
-    "Utils/Scene1.cpp"
-    "Utils/Scene2.cpp"
-    "Utils/GameScene.cpp")
+    "Scenes/Scene1.cpp"
+    
+    "Utils/Entity.cpp"
+    "Utils/Scene.cpp")
 
 # Include directories
 
@@ -49,9 +41,10 @@ set(MY_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 set(MY_INCLUDE_DIRECTORIES
     "${MY_SOURCE_DIR}"
-    "${MY_SOURCE_DIR}/Physics"
-    "${MY_SOURCE_DIR}/Physics/Particles"
+    "${MY_SOURCE_DIR}/Components"
+    "${MY_SOURCE_DIR}/ParticleSystem"
     "${MY_SOURCE_DIR}/Render"
+    "${MY_SOURCE_DIR}/Scenes"
     "${MY_SOURCE_DIR}/Utils")
 
 set(APPENDED_SOURCE_FILES "")

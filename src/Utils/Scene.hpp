@@ -2,12 +2,11 @@
 
 #include <list>
 #include <memory>
+#include "KillableList.hpp"
 
-#include "GravityForceGenerator.hpp"
-
-class Entity;
-class ParticleSystem;
-class EntityContainer;
+#include "Entity.hpp"
+#include "ParticleSystem.hpp"
+#include "ForceGenerator.hpp"
 
 // Tendria que heredar de una interfaz, la misma de la que deba heredar entity container
 // que fuerce a implementar update y enableRendering
@@ -17,8 +16,11 @@ public:
     virtual ~Scene() = 0 {}
     virtual void keyPress(unsigned char key) {}
     virtual void update(double dt);
-    virtual void enableRendering();
+    void enableRendering();
 protected:
-    std::shared_ptr<EntityContainer> sceneEntities;
-    std::unique_ptr<GravityForceGenerator> gravityForce;
+
+    KillableList<Entity> sceneEntities;
+
+    KillableList<ParticleSystem> particleSystems;
+    KillableList<ForceGenerator> forceGenerators;
 };

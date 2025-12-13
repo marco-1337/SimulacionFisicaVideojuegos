@@ -35,6 +35,7 @@
 #include "foundation/PxPreprocessor.h"
 
 #if PX_WINDOWS
+#define NOMINMAX
 #include <windows.h>
 #pragma warning(disable: 4505)
 #include <glut.h>
