@@ -2,14 +2,18 @@
 
 #include <unordered_set>
 
+#include <memory>
+
 #include "Killable.hpp"
+#include "FlaggedActivable.hpp"
 #include "Entity.hpp"
 
-class ForceGenerator: public Killable {
+class ForceGenerator: public Killable, public FlaggedActivable {
 public:
-    virtual void tryAddForce(Entity& ent, double dt) = 0;
-    inline bool isEnabled() { return enabled; }
+    inline ForceGenerator( std::shared_ptr<bool> enabledFlag = std::make_shared<bool>(true))
+        : FlaggedActivable(enabledFlag) {}
 
-protected:
-    bool enabled;
+    virtual void tryAddForce(Entity& ent, double dt) = 0;
+
+    void setEnabled(bool e) { *enabledFlag = e; }
 };

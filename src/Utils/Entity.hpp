@@ -12,12 +12,9 @@
 
 class RenderItem;
 
-static constexpr double PI = 3.14159265358979323846;
-static constexpr double GRAVITY = -9.8;
-
 class Entity: public Killable {
 public:
-    Entity(Vector3 position, Shape *shape, Vector4 color);
+    Entity(const Vector3& position, const physx::PxGeometry& geometry, Vector4 color);
     ~Entity();
 
     void update(double t);
@@ -41,15 +38,30 @@ public:
 		return components[cId] != nullptr;
     }
 
+    template <typename T>
+    inline T& getComponent() const {
+        constexpr cmpId_t cId = cmpId<T>;
+		assert(cId < maxComponentId);
+
+		return static_cast<T&>(*(components[cId]));
+    }
+
     Vector3 getPos() const;
     void setPos(Vector3 pos);
     void translate(Vector3 pos);
 
+    void setColor(Vector4 color);
+
+    void addActorToRenderItem(physx::PxRigidActor *actor);
+
 protected:
+
+    friend class StaticRigidbodyComponent;
+    friend class DynamicRigidbodyComponent;
+
     std::shared_ptr<Component> components[maxComponentId] = {};
     
-    RenderItem *myRenderItem;
+    RenderItem *myRenderItem = nullptr;
+    Shape *myShape = nullptr;
     physx::PxTransform myTransform;
-
-    friend class Component;
 };

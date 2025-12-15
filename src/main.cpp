@@ -11,7 +11,10 @@
 #include <iostream>
 
 #include "Scene.hpp"
+
+#include "Scene0.hpp"
 #include "Scene1.hpp"
+#include "Scene2.hpp"
 
 #include <list>
 
@@ -53,18 +56,22 @@ void initPhysics(bool interactive)
 
 	gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.6f);
 
+	/* 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
-	sceneDesc.gravity = PxVec3(0.0f, -9.8f, 0.0f);
+	sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
 	gDispatcher = PxDefaultCpuDispatcherCreate(2);
 	sceneDesc.cpuDispatcher = gDispatcher;
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
+	*/
+
+	gScenes.push_back(new Scene0());
+	gScenes.push_back(new Scene1());
+	gScenes.push_back(new Scene2());
 
 	ClearRenderItems();
-
-	gScenes.push_back(new Scene1());
 
 	currentScene = gScenes[0];
 	currentScene->enableRendering();
@@ -79,8 +86,8 @@ void stepPhysics(bool interactive, double t)
 
 	PX_UNUSED(interactive);
 
-	gScene->simulate(t);
-	gScene->fetchResults(true);
+	currentScene->simulate(t);
+	currentScene->fetchResults(true);
 }
 
 // Function to clean data
@@ -94,8 +101,8 @@ void cleanupPhysics(bool interactive)
 	PX_UNUSED(interactive);
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
-	gScene->release();
-	gDispatcher->release();
+	//gScene->release();
+	//gDispatcher->release();
 	// -----------------------------------------------------
 	gPhysics->release();	
 	PxPvdTransport* transport = gPvd->getTransport();

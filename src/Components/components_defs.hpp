@@ -8,11 +8,15 @@
 class ParticleComponent;
 class HeightDeletableComponent;
 class TimeDeletableComponent;
+class StaticRigidbodyComponent;
+class DynamicRigidbodyComponent;
 
 #define _CMPS_LIST_ \
 	ParticleComponent, \
 	HeightDeletableComponent, \
-	TimeDeletableComponent
+	TimeDeletableComponent, \
+	StaticRigidbodyComponent, \
+	DynamicRigidbodyComponent
 
 
 namespace cmp {

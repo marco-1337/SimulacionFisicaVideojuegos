@@ -13,11 +13,12 @@ enum Integrator {
 
 class ParticleComponent: public Component {
 public: 
-    ParticleComponent(Vector3 velocity, Integrator integrator, double mass);
+    ParticleComponent(const Vector3& velocity, Integrator integrator, double mass);
 
     virtual void update(Entity& ent,  double t) override;
     void addForce(Vector3 f);
-private:    
+    virtual double getMass() const;
+protected:    
     static constexpr double DAMPING = 0.99;
 
     Integrator integrator;

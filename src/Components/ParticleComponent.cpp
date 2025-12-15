@@ -3,14 +3,17 @@
 #include <limits>
 #include <cmath>
 
+#include <iostream>
+
 using namespace physx;
 
-ParticleComponent::ParticleComponent(Vector3, Integrator integrator, double mass)
-: Component() {
-
-    this->velocity = velocity;
-    this->integrator = integrator;
-    this->mass = mass;
+ParticleComponent::ParticleComponent(const Vector3& velocity, Integrator integrator, double mass)
+: Component(),
+velocity(velocity),
+integrator(integrator),
+mass(mass),
+acceleration(0.),
+force(0.) {
 
     //if (integrator == VERLET) this->integrator = PRE_VERLET;
     if (mass <= 0.) {
@@ -25,13 +28,12 @@ ParticleComponent::ParticleComponent(Vector3, Integrator integrator, double mass
 
 void
 ParticleComponent::update(Entity& ent, double t) {
-// Calcula la acceleración
-
+    
+    // Calcula la acceleración
     acceleration = force * inverseMass;
     force = Vector3(0.);
 
     // Integra con la acceleracion
-
     switch (integrator) {
         case EULER:
 
@@ -77,4 +79,9 @@ ParticleComponent::update(Entity& ent, double t) {
 void
 ParticleComponent::addForce(Vector3 f) { 
     force += f; 
+}
+
+double 
+ParticleComponent::getMass() const {
+    return mass;
 }

@@ -21,19 +21,33 @@ set(MY_SOURCE_FILES
     "callbacks.cpp"
     "RenderUtils.cpp"
 
-    "Components/HeightDeletableComponent.cpp"
     "Components/ParticleComponent.cpp"
+    "Components/ProjectileParticleComponent.cpp"
+    "Components/HeightDeletableComponent.cpp"
     "Components/TimeDeletableComponent.cpp"
+    "Components/TemperatureComponent.cpp"
+    "Components/StaticRigidbodyComponent.cpp"
+    "Components/DynamicRigidbodyComponent.cpp"
+
+    "ForceGenerators/GravityForceGenerator.cpp"
+
+    "ParticleGenerators/DustDiskParticleGenerator.cpp"
 
     "ParticleSystem/ParticleSystem.cpp"
+    "ParticleSystem/ParticleGenerator.cpp"
 
     "Render/Camera.cpp"
     "Render/Render.cpp"
 
+    "Scenes/Scene0.cpp"
     "Scenes/Scene1.cpp"
+    "Scenes/Scene2.cpp"
     
     "Utils/Entity.cpp"
-    "Utils/Scene.cpp")
+    "Utils/Scene.cpp"
+    "Utils/GaussianRandomizer.cpp"
+    "Utils/UniformRandomizer.cpp"
+    "Utils/PhysicsSceneContainer.cpp")
 
 # Include directories
 
@@ -43,6 +57,8 @@ set(MY_INCLUDE_DIRECTORIES
     "${MY_SOURCE_DIR}"
     "${MY_SOURCE_DIR}/Components"
     "${MY_SOURCE_DIR}/ParticleSystem"
+    "${MY_SOURCE_DIR}/ForceGenerators"
+    "${MY_SOURCE_DIR}/ParticleGenerators"
     "${MY_SOURCE_DIR}/Render"
     "${MY_SOURCE_DIR}/Scenes"
     "${MY_SOURCE_DIR}/Utils")

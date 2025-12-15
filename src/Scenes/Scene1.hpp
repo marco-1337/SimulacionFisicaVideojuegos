@@ -2,8 +2,17 @@
 
 #include "Scene.hpp"
 
+class GravityForceGenerator;
+
 class Scene1: public Scene {
 public:
     Scene1();
-    virtual void keyPress(unsigned char key) override {}
+    
+    virtual void keyPress(unsigned char key) override;
+private:
+    physx::PxSphereGeometry particleGeometry;
+    ParticleSystem *dustSystem = nullptr;
+    
+    std::shared_ptr<GravityForceGenerator> gravityForce = nullptr;
+
 };

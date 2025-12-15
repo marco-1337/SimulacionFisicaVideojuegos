@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <functional>
 
-ParticleSystem::ParticleSystem(size_t maxParticles)
+ParticleSystem::ParticleSystem()
 : particleList(),
 particleGenerators(),
 forceGeneratorsRegistry() {}
@@ -35,7 +35,7 @@ void
 ParticleSystem::update(double dt) {
 
     particleGenerators.foreachAlive( [this, dt] (ParticleGenerator &generator) {
-        generator.generate(*this, dt);
+        if (generator.isEnabled()) generator.generate(*this, dt);
     });
 
     particleList.foreachAlive( [this, dt] (Entity &particle) {
@@ -54,6 +54,6 @@ ParticleSystem::update(double dt) {
 }
 
 void
-ParticleSystem::enabledRender() {
+ParticleSystem::enableRender() {
     particleList.foreachAlive( [] (Entity &particle) { particle.enableRender(); } );
 }
