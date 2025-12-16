@@ -5,23 +5,20 @@
 using namespace physx;
 
 DynamicRigidbodyComponent::DynamicRigidbodyComponent(Entity &ent, PxScene *scene, const Vector3& linearVelocity, 
-    const Vector3& angularVelocity, double mass, double noCollisionTime = 0.)
+    const Vector3& angularVelocity, double mass, double noCollisionTime)
 : scene(scene),
 activeTime(0),
-noCollisionTime((noCollisionTime))
+noCollisionTime(noCollisionTime)
 {
     dynamicBody = gPhysics->createRigidDynamic(ent.myTransform);
     dynamicBody->attachShape(*(ent.myShape));
     dynamicBody->setLinearVelocity(linearVelocity);
     dynamicBody->setAngularVelocity(angularVelocity);
+    dynamicBody->setMaxDepenetrationVelocity(2.0f);
     PxRigidBodyExt::setMassAndUpdateInertia(*dynamicBody, mass);
     scene->addActor(*dynamicBody);
 
     ent.addActorToRenderItem(dynamicBody);
-
-    if (noCollisionTime > 0.) {
-            ent.myShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
-    }
 }
 
 DynamicRigidbodyComponent::~DynamicRigidbodyComponent() {
@@ -32,15 +29,4 @@ DynamicRigidbodyComponent::~DynamicRigidbodyComponent() {
 void 
 DynamicRigidbodyComponent::addForceAtCenterOfMass(Vector3 force) {
     dynamicBody->addForce(force);
-}
-
-void
-DynamicRigidbodyComponent::update(Entity& ent, double dt) {
-    if (activeTime <= noCollisionTime) {
-        activeTime += dt;
-
-        if (activeTime >= noCollisionTime) {
-            ent.myShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
-        }
-    }
 }

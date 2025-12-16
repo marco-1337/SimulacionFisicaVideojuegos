@@ -16,8 +16,6 @@ public:
 
     void addForceAtCenterOfMass(Vector3 force);
 
-    virtual void update(Entity& ent, double dt) override;
-
 private:
     physx::PxRigidDynamic* dynamicBody = nullptr;
     physx::PxScene *scene = nullptr;

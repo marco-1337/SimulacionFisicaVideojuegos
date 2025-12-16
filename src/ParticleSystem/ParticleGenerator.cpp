@@ -8,6 +8,7 @@ ParticleGenerator::ParticleGenerator(double generationDuration, double generatio
 random(std::make_shared<std::mt19937>()),
 generationDuration(generationDuration),
 timeAlive(0.),
+accumulatedTry(0.),
 generationProbability(generationProbability),
 minTriesPerSecond(minTriesPerSecond),
 maxTriesPerSecond(maxTriesPerSecond) {
