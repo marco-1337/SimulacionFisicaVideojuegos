@@ -23,8 +23,7 @@ minLaunchSpeed(minLaunchSpeed),
 maxLaunchSpeed(maxLaunchSpeed),
 particleMinDuration(particleMinDuration), 
 particleMaxDuration(particleMaxDuration),
-particleColor(particleColor),
-uniformDistribution(0., 1.) {
+particleColor(particleColor) {
     
     particleGeometry = PxSphereGeometry(particleSize);
 }

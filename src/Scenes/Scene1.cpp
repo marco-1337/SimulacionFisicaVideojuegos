@@ -83,7 +83,19 @@ Scene1::keyPress(unsigned char key) {
         case 'J': {
             dustSystem->addParticleGenerator(
                 std::make_unique<DustDiskParticleGenerator>(
-                    Vector3(0.), 5., 0.5, 500, 1000, 10., 15., 1., 5., 1., Vector4(1., 1., 0., 1.), 0.3)
+                    Vector3(0.), 
+                    2., // radio de disco
+                    2., //min upward launch speed
+                    6., // max upward launch speed 
+                    1., // min particle duration 
+                    3., // max particle duration
+                    Vector4(1.), // particle color
+                    0.3, // particle size 
+                    2., // generation duration 
+                    0.5, // generation probability per try 
+                    100., // min tries per second
+                    200. // max tries per second
+                )
             );
         }
 	} 

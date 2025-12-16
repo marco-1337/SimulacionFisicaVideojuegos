@@ -22,8 +22,4 @@ private:
     double  radius, 
             minLaunchSpeed, maxLaunchSpeed, 
             particleMinDuration, particleMaxDuration;
-
-    std::unique_ptr<GaussianRandomizer> gaussianRand = nullptr;
-
-    std::uniform_real_distribution<double> uniformDistribution;
 };
