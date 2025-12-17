@@ -9,11 +9,12 @@ class Entity;
 extern physx::PxPhysics* gPhysics;
 
 class DynamicRigidbodyComponent: public Component {
-public: 
+public:
     DynamicRigidbodyComponent(Entity &ent, physx::PxScene *scene, const Vector3& linearVelocity, 
-        const Vector3& angularVelocity, double mass, double noCollisionTime = 0.);
+        const Vector3& angularVelocity, double mass, float staticFrition = 0.5f, float dynamicFrition = 0.5f,
+        float restitution = 0.6f);
     ~DynamicRigidbodyComponent();
-
+    
     void addForceAtCenterOfMass(Vector3 force);
 
 private:
