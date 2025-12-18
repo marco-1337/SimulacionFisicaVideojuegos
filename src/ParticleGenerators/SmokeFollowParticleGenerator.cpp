@@ -66,7 +66,7 @@ SmokeFollowParticleGenerator::generateParticle(double dt) {
             }
             else {
                 ent->addComponent<ParticleComponent>(std::make_unique<ParticleComponent>(shootVector, 
-                    Integrator::SYMPLECTIC_EULER, 150.));
+                    Integrator::SYMPLECTIC_EULER, 100.));
             }
 
             return ent;

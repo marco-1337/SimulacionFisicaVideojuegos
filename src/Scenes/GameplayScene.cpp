@@ -44,7 +44,6 @@ particleMass(100.),
 ballMass(2000.) {
 
     particleGeometryHolder = PxBoxGeometry(0.1, 0.1, 0.1);
-
     bolicheGeometry = PxSphereGeometry(0.5);
     ballGeometry = PxSphereGeometry(1.);
 
