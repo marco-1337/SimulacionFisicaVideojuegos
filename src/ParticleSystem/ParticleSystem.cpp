@@ -16,7 +16,8 @@ forceGeneratorsRegistry() {}
 void
 ParticleSystem::addParticle(std::unique_ptr<Entity> ent) {
 
-    if (ent->hasComponent<ParticleComponent>()) {
+    if (ent->hasComponent<ParticleComponent>() || 
+        ent->hasComponent<DynamicRigidbodyComponent>()) {
         particleList.addObject(std::move(ent));
     }
 }

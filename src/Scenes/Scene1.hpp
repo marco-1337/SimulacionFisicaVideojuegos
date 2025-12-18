@@ -11,7 +11,7 @@ public:
     virtual void keyPress(unsigned char key) override;
 private:
     physx::PxSphereGeometry particleGeometry;
-    ParticleSystem *dustSystem = nullptr;
+    std::shared_ptr<ParticleSystem> dustSystem = nullptr;
     
     std::shared_ptr<GravityForceGenerator> gravityForce = nullptr;
 

@@ -24,39 +24,34 @@ ExplosionForceGenerator::tryAddForce(Entity& ent, double dt) {
 
     if (timer->isAlive()) {
 
-        if (ent.hasComponent<ParticleComponent>()) {
+        bool hasParticle = ent.hasComponent<ParticleComponent>();
+        bool hasDynamicRigid = ent.hasComponent<DynamicRigidbodyComponent>();
+
+        if (hasParticle ||  hasDynamicRigid) {
             ParticleComponent &pComponent = ent.getComponent<ParticleComponent>();
             
             Vector3 dirVec = ent.getPos() - position;
             double r = dirVec.magnitude();
 
-            if (r < explosionRadius) {
-
+            if (r < explosionRadius && r > 0.0) {
+                
                 dirVec.normalize();
 
-                pComponent.addForce(
+                Vector3 explosionForceVector = 
                     (explosionForce / (r * r)) * 
-                    ent.getPos() - position * 
-                    std::exp(-(timer->getCurrentTime()/thau))
-                );
-            }
-        }
-        else if (ent.hasComponent<DynamicRigidbodyComponent>()) {
-            DynamicRigidbodyComponent &pComponent = ent.getComponent<DynamicRigidbodyComponent>();
-            
-            Vector3 dirVec = ent.getPos() - position;
-            double r = dirVec.magnitude();
+                    (ent.getPos() - position) * 
+                    std::exp(-(timer->getCurrentTime()/thau));
 
-            if (r < explosionRadius) {
-                pComponent.addForceAtCenterOfMass((explosionForce / (r * r)) * 
-                    ent.getPos() - position * 
-                    std::exp(-(timer->getCurrentTime()/thau))
-                );
+                if (hasParticle) {
+                    ent.getComponent<ParticleComponent>().addForce(explosionForceVector);
+                }
+                else {
+                    ent.getComponent<DynamicRigidbodyComponent>().addForceAtCenterOfMass(explosionForceVector);
+                }
             }
         }
     }
     else {
-        std::cout << "muelto \n";
         alive = false;
     }
 }

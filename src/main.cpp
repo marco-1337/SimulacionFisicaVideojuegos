@@ -15,6 +15,7 @@
 #include "Scene0.hpp"
 #include "Scene1.hpp"
 #include "Scene2.hpp"
+#include "GameplayScene.hpp"
 
 #include <list>
 
@@ -40,6 +41,8 @@ ContactReportCallback gContactReportCallback;
 
 std::vector<Scene*> gScenes = std::vector<Scene*>();
 Scene* currentScene;
+
+bool gGenerateRigidbody = false;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -70,10 +73,11 @@ void initPhysics(bool interactive)
 	gScenes.push_back(new Scene0());
 	gScenes.push_back(new Scene1());
 	gScenes.push_back(new Scene2());
+	gScenes.push_back(new GameplayScene());
 
 	ClearRenderItems();
 
-	currentScene = gScenes[0];
+	currentScene = gScenes[3];
 	currentScene->enableRendering();
 }
 
@@ -149,6 +153,8 @@ void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 {
 	PX_UNUSED(actor1);
 	PX_UNUSED(actor2);
+
+	currentScene->onCollision(actor1, actor2);
 }
 
 

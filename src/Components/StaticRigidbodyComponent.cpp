@@ -4,13 +4,16 @@
 
 using namespace physx;
 
-StaticRigidbodyComponent::StaticRigidbodyComponent(Entity &e, PxScene *scene) 
+StaticRigidbodyComponent::StaticRigidbodyComponent(Entity &ent, PxScene *scene) 
 : scene(scene) {
-    staticBody = gPhysics->createRigidStatic(*(e.myTransform));
-    staticBody->attachShape(*(e.myShape));
+    staticBody = gPhysics->createRigidStatic(*(ent.myTransform));
+
+    staticBody->userData = &ent;
+
+    staticBody->attachShape(*(ent.myShape));
     scene->addActor(*staticBody);
 
-    e.addActorToRenderItem(staticBody);
+    ent.addActorToRenderItem(staticBody);
 }
 
 StaticRigidbodyComponent::~StaticRigidbodyComponent() {

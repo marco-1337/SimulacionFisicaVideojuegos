@@ -5,12 +5,14 @@
 using namespace physx;
 
 DynamicRigidbodyComponent::DynamicRigidbodyComponent(Entity &ent, PxScene *scene, const Vector3& linearVelocity, 
-    const Vector3& angularVelocity, double mass, physx::PxReal staticFrition, physx::PxReal dynamicFrition,
-    physx::PxReal restitution, float linearDamping, float angularDamping )
+    const Vector3& angularVelocity, double mass, float staticFrition, float dynamicFrition,
+    float restitution, float linearDamping, float angularDamping )
 : scene(scene),
 activeTime(0) {
 
     dynamicBody = gPhysics->createRigidDynamic(*(ent.myTransform));
+
+    dynamicBody->userData = &ent;
 
     PxMaterial *mat;
     ent.myShape->getMaterials(&mat, 1);
@@ -41,4 +43,14 @@ DynamicRigidbodyComponent::~DynamicRigidbodyComponent() {
 void 
 DynamicRigidbodyComponent::addForceAtCenterOfMass(Vector3 force) {
     dynamicBody->addForce(force);
+}
+
+void
+DynamicRigidbodyComponent::setSleepThreshold(float threshold) {
+    dynamicBody->setSleepThreshold(threshold);
+}
+
+void
+DynamicRigidbodyComponent::setKinematic() { 
+    dynamicBody->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
 }

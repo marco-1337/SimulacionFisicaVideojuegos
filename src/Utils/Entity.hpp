@@ -50,8 +50,10 @@ public:
     void setPos(Vector3 pos);
     void translate(Vector3 pos);
 
-    void setColor(Vector4 color);
+    double getBoundsHeight();
+    double getApproximatedVolume();
 
+    void setColor(Vector4 color);
     void addActorToRenderItem(physx::PxRigidActor *actor);
 
 protected:

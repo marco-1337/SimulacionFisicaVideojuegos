@@ -60,6 +60,37 @@ Entity::translate(Vector3 pos) {
     }
 }
 
+double
+Entity::getBoundsHeight() {
+
+    PxGeometryHolder geometry = myShape->getGeometry();
+
+    PxBounds3 bounds = PxGeometryQuery::getWorldBounds(
+        geometry.any(),
+        ((myActor != nullptr) ? myActor->getGlobalPose() : PxTransform(PxIdentity))
+    );
+
+    return (bounds.maximum.y - bounds.minimum.y);
+}
+
+double
+Entity::getApproximatedVolume() {
+
+    if (myActor) {
+        
+        PxShape* shape = nullptr;
+        myActor->getShapes(&shape, 1);
+
+        PxBounds3 bounds = PxShapeExt::getWorldBounds(*shape, *myActor);
+        Vector3 size = bounds.maximum - bounds.minimum;
+
+        return size.x * size.y * size.z;
+    }
+    else {
+        return 1.;
+    }
+}
+
 void 
 Entity::setColor(Vector4 color) {
     myRenderItem->color = color;

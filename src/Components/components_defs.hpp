@@ -6,19 +6,25 @@
 // Components list - must have at least one element
 //
 class ParticleComponent;
-class HeightDeletableComponent;
+class CubeAreaDeleterComponent;
 class TimeDeletableComponent;
 class StaticRigidbodyComponent;
 class DynamicRigidbodyComponent;
 class TemperatureComponent;
+class FloorComponent;
+class BolicheComponent;
+class BallComponent;
 
 #define _CMPS_LIST_ \
 	ParticleComponent, \
-	HeightDeletableComponent, \
+	CubeAreaDeleterComponent, \
 	TimeDeletableComponent, \
 	StaticRigidbodyComponent, \
 	DynamicRigidbodyComponent, \
-	TemperatureComponent
+	TemperatureComponent, \
+	FloorComponent, \
+	BolicheComponent, \
+	BallComponent
 
 
 namespace cmp {

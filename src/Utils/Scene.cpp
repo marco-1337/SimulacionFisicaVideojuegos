@@ -24,8 +24,8 @@ Scene::update(double dt) {
         e.update(dt); 
     });
 
-    for (size_t i = 0; i < particleSystems.size(); ++i) {
-        particleSystems[i].update(dt);
+    for (auto system : particleSystems) {
+        system->update(dt);
     }
 
     for (auto it = sceneForceGeneratorsRegistry.begin(); it != sceneForceGeneratorsRegistry.end(); ) {
@@ -38,8 +38,8 @@ void
 Scene::enableRendering() {
     sceneEntities.foreachAlive( [](Entity& e) { e.enableRender(); });
 
-    for (size_t i = 0; i < particleSystems.size(); ++i) {
-        particleSystems[i].enableRender();
+    for (auto system : particleSystems) {
+        system->enableRender();
     }
 }
 
@@ -48,6 +48,13 @@ Scene::simulate(double dt) { myPhysxScene->simulate(dt); }
 
 bool 
 Scene::fetchResults(bool block) { return myPhysxScene->fetchResults(block); }
+
+void 
+Scene::onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
+{
+	PX_UNUSED(actor1);
+	PX_UNUSED(actor2);
+}
 
 std::shared_ptr<Timer> 
 Scene::addTimer(double t) {

@@ -2,7 +2,7 @@
 
 #include "PhysicsSceneContainer.hpp"
 
-#include <vector>
+#include <list>
 #include <memory>
 #include <unordered_set>
 
@@ -29,6 +29,8 @@ public:
     void simulate(double dt);
 	bool fetchResults(bool block);
 
+    virtual void onCollision(physx::PxActor* actor1, physx::PxActor* actor2);
+
 protected:
     std::shared_ptr<Timer> addTimer(double t);
 
@@ -37,5 +39,5 @@ protected:
     KillableList<Entity> sceneEntities;
     std::unordered_set<std::shared_ptr<ForceGenerator>> sceneForceGeneratorsRegistry;
 
-    std::vector<ParticleSystem> particleSystems;
+    std::vector<std::shared_ptr<ParticleSystem>> particleSystems;
 };

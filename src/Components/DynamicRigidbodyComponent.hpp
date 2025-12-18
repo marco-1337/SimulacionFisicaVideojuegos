@@ -4,7 +4,10 @@
 
 #include "physxDefs.hpp"
 
+#include <iostream>
+
 class Entity;
+class BallComponent;
 
 extern physx::PxPhysics* gPhysics;
 
@@ -17,10 +20,15 @@ public:
     
     void addForceAtCenterOfMass(Vector3 force);
 
+    void setSleepThreshold(float threshold);
+    void setKinematic();
+
 private:
     physx::PxRigidDynamic* dynamicBody = nullptr;
     physx::PxScene *scene = nullptr;
 
     double activeTime;
     double noCollisionTime;
+
+    friend class BallComponent;
 };

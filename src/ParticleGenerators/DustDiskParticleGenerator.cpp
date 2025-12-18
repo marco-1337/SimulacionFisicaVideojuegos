@@ -4,6 +4,7 @@
 
 #include "Entity.hpp"
 #include "ParticleComponent.hpp"
+#include "DynamicRigidbodyComponent.hpp"
 #include "TimeDeletableComponent.hpp"
 #include "ParticleSystem.hpp"
 
@@ -13,20 +14,20 @@ using namespace physx;
 
 DustDiskParticleGenerator::DustDiskParticleGenerator(Vector3 pos, double radius, double minLaunchSpeed, 
     double maxLaunchSpeed, double particleMinDuration, double particleMaxDuration, Vector4 particleColor, 
-    double particleSize, double generationDuration, double minTriesPerSecond, double maxTriesPerSecond, 
-    std::shared_ptr<bool> enabledFlag)
+    double generationDuration, double minTriesPerSecond, double maxTriesPerSecond, 
+    physx::PxGeometry& particleGeometry, physx::PxScene *physicalScene,
+    std::shared_ptr<CubeAreaDeleterComponent> cubeDeleter, std::shared_ptr<bool> enabledFlag)
 
-: ParticleGenerator(generationDuration, minTriesPerSecond, maxTriesPerSecond, 1.5, enabledFlag),
+: ParticleGenerator(generationDuration, minTriesPerSecond, maxTriesPerSecond, particleGeometry, 
+    1.5, cubeDeleter, enabledFlag),
 position(pos),
 radius(radius),
 minLaunchSpeed(minLaunchSpeed),
 maxLaunchSpeed(maxLaunchSpeed),
 particleMinDuration(particleMinDuration), 
 particleMaxDuration(particleMaxDuration),
-particleColor(particleColor) {
-    
-    particleGeometry = PxSphereGeometry(particleSize);
-}
+particleColor(particleColor),
+physicalScene(physicalScene) {}
 
 std::unique_ptr<Entity> 
 DustDiskParticleGenerator::generateParticle(double dt) { 
@@ -40,14 +41,21 @@ DustDiskParticleGenerator::generateParticle(double dt) {
 
     std::unique_ptr<Entity> ent = std::make_unique<Entity>(
         Vector3(std::cos(angle) * module, 0., std::sin(angle) * module) + position,
-        particleGeometry, particleColor);
+        *particleGeometry, particleColor);
 
-    ent->addComponent<ParticleComponent>(std::make_unique<ParticleComponent>(
-        Vector3(0., gaussianRand->mapRange(minLaunchSpeed, maxLaunchSpeed) * multiplier, 0.),
-        Integrator::SYMPLECTIC_EULER, 0.1));
-    
     ent->addComponent<TimeDeletableComponent>(std::make_unique<TimeDeletableComponent>(
         gaussianRand->mapRange(particleMinDuration, particleMaxDuration)));
+
+    Vector3 shootVector = Vector3(0., gaussianRand->mapRange(minLaunchSpeed, maxLaunchSpeed) * multiplier, 0.);
+
+    if (gGenerateRigidbody) {
+        ent->addComponent<DynamicRigidbodyComponent>(std::make_unique<DynamicRigidbodyComponent>(
+            *ent, physicalScene, shootVector, Vector3(0.), 150., 1., 1., 0.));
+    }
+    else {
+        ent->addComponent<ParticleComponent>(std::make_unique<ParticleComponent>(shootVector, 
+            Integrator::SYMPLECTIC_EULER, 150.));
+    }
 
     return ent;
 }

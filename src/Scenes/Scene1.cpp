@@ -35,8 +35,8 @@ Scene1::Scene1() {
     gravityForce = std::make_shared<GravityForceGenerator>(GRAVITY_FORCE);
     sceneForceGeneratorsRegistry.insert(gravityForce);
 
-    particleSystems.push_back(ParticleSystem());
-    dustSystem = &(particleSystems.back());
+    particleSystems.push_back(std::make_shared<ParticleSystem>());
+    dustSystem = particleSystems.back();
     dustSystem->registerForceGenerator(gravityForce);
 }
 
@@ -95,10 +95,11 @@ Scene1::keyPress(unsigned char key) {
                     1., // min particle duration 
                     2., // max particle duration
                     Vector4(1., 0., 1., 1.), // particle color
-                    0.1, // particle size 
                     1., // generation duration 
                     150., // min tries per second
-                    300. // max tries per second
+                    300., // max tries per second
+                    particleGeometry,
+                    myPhysxScene
                 )
             );
         }

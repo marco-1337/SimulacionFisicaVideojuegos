@@ -8,8 +8,10 @@
 class DustDiskParticleGenerator: public ParticleGenerator {
 public:
     DustDiskParticleGenerator(Vector3 pos, double radius, double minLaunchSpeed, double maxLaunchSpeed, 
-        double particleMinDuration, double particleMaxDuration, Vector4 particleColor, double particleSize, 
+        double particleMinDuration, double particleMaxDuration, Vector4 particleColor, 
         double generationDuration, double minTriesPerSecond, double maxTriesPerSecond, 
+        physx::PxGeometry& particleGeometry, physx::PxScene *scene, 
+        std::shared_ptr<CubeAreaDeleterComponent> cubeDeleter = nullptr,
         std::shared_ptr<bool> enabledFlag = nullptr);
 
 private:
@@ -17,7 +19,8 @@ private:
 
     Vector3 position; 
     Vector4 particleColor;
-	physx::PxSphereGeometry particleGeometry;
+
+    physx::PxScene * physicalScene;
 
     double  radius, 
             minLaunchSpeed, maxLaunchSpeed, 

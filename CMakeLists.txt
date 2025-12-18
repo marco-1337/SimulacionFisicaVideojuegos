@@ -23,15 +23,18 @@ set(MY_SOURCE_FILES
 
     "Components/ParticleComponent.cpp"
     "Components/ProjectileParticleComponent.cpp"
-    "Components/HeightDeletableComponent.cpp"
+    "Components/CubeAreaDeleterComponent.cpp"
     "Components/TimeDeletableComponent.cpp"
     "Components/TemperatureComponent.cpp"
     "Components/StaticRigidbodyComponent.cpp"
     "Components/DynamicRigidbodyComponent.cpp"
+    "Components/BallComponent.cpp"
+    "Components/BolicheComponent.cpp"
 
     "ForceGenerators/GravityForceGenerator.cpp"
     "ForceGenerators/ThermalLiftForceGenerator.cpp"
     "ForceGenerators/ExplosionForceGenerator.cpp"
+    "ForceGenerators/BuoyancyForceGenerator.cpp"
 
     "ParticleGenerators/DustDiskParticleGenerator.cpp"
     "ParticleGenerators/SmokeFollowParticleGenerator.cpp"
@@ -45,7 +48,8 @@ set(MY_SOURCE_FILES
     "Scenes/Scene0.cpp"
     "Scenes/Scene1.cpp"
     "Scenes/Scene2.cpp"
-    
+    "Scenes/GameplayScene.cpp"
+
     "Utils/Entity.cpp"
     "Utils/Scene.cpp"
     "Utils/GaussianRandomizer.cpp"
