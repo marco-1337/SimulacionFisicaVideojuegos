@@ -12,6 +12,10 @@ Scene::~Scene() {}
 void
 Scene::update(double dt) {
 
+    timers.foreachAlive( [dt] (Timer& timer) {
+        timer.addTime(dt);
+    });
+
     sceneEntities.foreachAlive( [this, dt](Entity& e) { 
 
         for (auto forceGen : sceneForceGeneratorsRegistry) {
@@ -44,3 +48,13 @@ Scene::simulate(double dt) { myPhysxScene->simulate(dt); }
 
 bool 
 Scene::fetchResults(bool block) { return myPhysxScene->fetchResults(block); }
+
+std::shared_ptr<Timer> 
+Scene::addTimer(double t) {
+
+    std::shared_ptr<Timer> timer = Timer::Create(t);
+
+    timers.addObject(timer);
+
+    return timer;
+}

@@ -14,8 +14,8 @@ class ParticleSystem;
 
 class ParticleGenerator: public Killable, public FlaggedActivable  {
 public:
-    ParticleGenerator(double generationDuration, double generationProbability, double minTriesPerSecond, 
-        double maxTriesPerSecond, std::shared_ptr<bool> enabled = nullptr);
+    ParticleGenerator(double generationDuration, double minTriesPerSecond, 
+        double maxTriesPerSecond, double gaussianDeviation = 0.3, std::shared_ptr<bool> enabled = nullptr);
     
     void generate(ParticleSystem& system, double dt);
 
@@ -28,6 +28,5 @@ protected:
     std::unique_ptr<GaussianRandomizer> gaussianRand = nullptr;
     std::unique_ptr<UniformRandomizer> uniformRand = nullptr;
 
-    double generationDuration, timeAlive, generationProbability, 
-        minTriesPerSecond, maxTriesPerSecond, accumulatedTry;
+    double generationDuration, timeAlive, minTriesPerSecond, maxTriesPerSecond, accumulatedTry;
 };

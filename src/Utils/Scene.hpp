@@ -12,6 +12,8 @@
 #include "ParticleSystem.hpp"
 #include "ForceGenerator.hpp"
 
+#include "Timer.hpp"
+
 #include "callbacks.hpp"
 
 // Tendria que heredar de una interfaz, la misma de la que deba heredar entity container
@@ -28,6 +30,9 @@ public:
 	bool fetchResults(bool block);
 
 protected:
+    std::shared_ptr<Timer> addTimer(double t);
+
+    KillableList<Timer> timers;
 
     KillableList<Entity> sceneEntities;
     std::unordered_set<std::shared_ptr<ForceGenerator>> sceneForceGeneratorsRegistry;

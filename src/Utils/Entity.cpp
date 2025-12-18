@@ -7,10 +7,10 @@
 using namespace physx;
 
 Entity::Entity(const Vector3& position, const PxGeometry& geometry, Vector4 color)
-: myTransform(position){
+: myTransform(new physx::PxTransform(position)){
 
     myShape = CreateShape(geometry);
-    myRenderItem = new RenderItem(myShape, &this->myTransform, color);
+    myRenderItem = new RenderItem(myShape, this->myTransform, color);
 }
 
 Entity::~Entity() {
@@ -36,17 +36,28 @@ Entity::enableRender() {
 
 Vector3
 Entity::getPos() const{
-    return myTransform.p;
+    if (myTransform) {
+        return myTransform->p;
+    }
+    else if (myActor) {
+        return myActor->getGlobalPose().p;
+    }
+
+    return Vector3(0.);
 }
 
 void
 Entity::setPos(Vector3 pos) {
-    myTransform.p = pos;
+    if (myTransform) {
+        myTransform->p = pos;
+    }
 }
 
 void
 Entity::translate(Vector3 pos) {
-    myTransform.p += pos;
+    if (myTransform) {
+        myTransform->p += pos;
+    }
 }
 
 void 
@@ -58,6 +69,12 @@ void
 Entity::addActorToRenderItem(PxRigidActor *actor) {
 
     RenderItem *aux = myRenderItem;
+
     myRenderItem = new RenderItem(myShape, actor, aux->color);
+    myActor = actor;
+
     aux->release();
+
+    delete myTransform;
+    myTransform = nullptr;
 }

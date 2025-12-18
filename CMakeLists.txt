@@ -30,8 +30,11 @@ set(MY_SOURCE_FILES
     "Components/DynamicRigidbodyComponent.cpp"
 
     "ForceGenerators/GravityForceGenerator.cpp"
+    "ForceGenerators/ThermalLiftForceGenerator.cpp"
+    "ForceGenerators/ExplosionForceGenerator.cpp"
 
     "ParticleGenerators/DustDiskParticleGenerator.cpp"
+    "ParticleGenerators/SmokeFollowParticleGenerator.cpp"
 
     "ParticleSystem/ParticleSystem.cpp"
     "ParticleSystem/ParticleGenerator.cpp"

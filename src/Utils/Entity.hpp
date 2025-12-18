@@ -63,5 +63,6 @@ protected:
     
     RenderItem *myRenderItem = nullptr;
     Shape *myShape = nullptr;
-    physx::PxTransform myTransform;
+    physx::PxTransform *myTransform = nullptr;
+    physx::PxRigidActor *myActor = nullptr;
 };

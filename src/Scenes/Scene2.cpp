@@ -10,6 +10,9 @@
 #include "StaticRigidbodyComponent.hpp"
 #include "DynamicRigidbodyComponent.hpp"
 
+#include "SmokeFollowParticleGenerator.hpp"
+#include "ThermalLiftForceGenerator.hpp"
+
 #include "GravityForceGenerator.hpp"
 
 #include "consts.hpp"
@@ -32,12 +35,20 @@ Scene2::Scene2() {
     ent = std::make_unique<Entity>(Vector3(0., 0., 10.), particleGeometry, Vector4(0., 0., 1., 1.));
     sceneEntities.addObject(std::move(ent));
 
+    gravityForce = std::make_shared<GravityForceGenerator>(GRAVITY_FORCE);
     sceneForceGeneratorsRegistry.insert(std::make_shared<GravityForceGenerator>(GRAVITY_FORCE));
 
     PxBoxGeometry box = PxBoxGeometry(30., 0.1, 30.);
     ent = std::make_unique<Entity>(Vector3(0., -10., 0.), box, Vector4(0.5, 0., 0.5, 1.));
     ent->addComponent<StaticRigidbodyComponent>(std::make_unique<StaticRigidbodyComponent>(*ent, myPhysxScene));
     sceneEntities.addObject(std::move(ent));
+
+    particleSystems.push_back(ParticleSystem());
+    smokeSystem = &(particleSystems.back());
+    smokeSystem->registerForceGenerator(gravityForce);
+
+    smokeSystem->registerForceGenerator(std::make_shared<GravityForceGenerator>(GRAVITY_FORCE));
+    smokeSystem->registerForceGenerator(std::make_shared<ThermalLiftForceGenerator>(3.));
 }
 
 void 
@@ -84,8 +95,6 @@ Scene2::keyPress(unsigned char key) {
 
         case 'V': {
 
-            particleGeometry = PxSphereGeometry(1.f);
-
             std::unique_ptr<Entity> particle = std::make_unique<Entity>(Vector3(0.), 
                 particleGeometry, Vector4(0., 1., 1., 1.));
 
@@ -97,5 +106,20 @@ Scene2::keyPress(unsigned char key) {
         }
             
         break;
+
+        case 'B': {
+
+            std::unique_ptr<Entity> particle = std::make_unique<Entity>(Vector3(0.), 
+                particleGeometry, Vector4(1., 0.5, 0.2, 1.));
+
+            particle->addComponent<DynamicRigidbodyComponent>(
+                std::make_shared<DynamicRigidbodyComponent>(*particle, myPhysxScene,
+                    Vector3(-20., 20., -20.).getNormalized() * 3.5, Vector3(0., 0., 1.), 1.0));
+
+            std::weak_ptr<Entity> objReference = sceneEntities.addObject(std::move(particle));
+
+            smokeSystem->addParticleGenerator(std::make_unique<SmokeFollowParticleGenerator>(
+                    objReference, particleGeometry, 2., 50., 20., 10., 20., PI/2., 7., 5., 50., 150.));
+        }
 	}
 }

@@ -6,7 +6,7 @@ using namespace physx;
 
 StaticRigidbodyComponent::StaticRigidbodyComponent(Entity &e, PxScene *scene) 
 : scene(scene) {
-    staticBody = gPhysics->createRigidStatic(e.myTransform);
+    staticBody = gPhysics->createRigidStatic(*(e.myTransform));
     staticBody->attachShape(*(e.myShape));
     scene->addActor(*staticBody);
 

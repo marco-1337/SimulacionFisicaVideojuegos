@@ -6,11 +6,11 @@ using namespace physx;
 
 DynamicRigidbodyComponent::DynamicRigidbodyComponent(Entity &ent, PxScene *scene, const Vector3& linearVelocity, 
     const Vector3& angularVelocity, double mass, physx::PxReal staticFrition, physx::PxReal dynamicFrition,
-    physx::PxReal restitution)
+    physx::PxReal restitution, float linearDamping, float angularDamping )
 : scene(scene),
 activeTime(0) {
 
-    dynamicBody = gPhysics->createRigidDynamic(ent.myTransform);
+    dynamicBody = gPhysics->createRigidDynamic(*(ent.myTransform));
 
     PxMaterial *mat;
     ent.myShape->getMaterials(&mat, 1);
@@ -18,6 +18,9 @@ activeTime(0) {
     mat->setStaticFriction(staticFrition);
     mat->setDynamicFriction(dynamicFrition);
     mat->setRestitution(restitution);
+    
+    dynamicBody->setLinearDamping(linearDamping);
+    dynamicBody->setAngularDamping(angularDamping);
 
     dynamicBody->attachShape(*(ent.myShape));
     dynamicBody->setLinearVelocity(linearVelocity);

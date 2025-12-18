@@ -1,12 +1,8 @@
 #pragma once
 
 #include "Entity.hpp"
-#include <memory>
-#include <list>
 
 #include "ForceGenerator.hpp"
-
-class EntityContainer;
 
 class ThermalLiftForceGenerator: public ForceGenerator {
 public:

@@ -30,7 +30,7 @@ TemperatureComponent::update(Entity &e, double dt) {
 
     double coolingRate = baseCooling + ( height * heightCoolingFactor);
     temperature = std::max(temperature - (coolingRate * dt), 0.);
-    e.setColor(Vector4(0., temperature, 0., 1.));
+    e.setColor(Vector4(0.5*temperature, 0.5*temperature, 0.5*temperature, 0.5));
 }
 
 double

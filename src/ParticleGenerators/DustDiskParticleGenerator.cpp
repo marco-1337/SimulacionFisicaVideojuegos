@@ -13,10 +13,10 @@ using namespace physx;
 
 DustDiskParticleGenerator::DustDiskParticleGenerator(Vector3 pos, double radius, double minLaunchSpeed, 
     double maxLaunchSpeed, double particleMinDuration, double particleMaxDuration, Vector4 particleColor, 
-    double particleSize, double generationDuration, double generationProbability, double minTriesPerSecond, 
-    double maxTriesPerSecond, std::shared_ptr<bool> enabledFlag)
-: ParticleGenerator(generationDuration, generationProbability, minTriesPerSecond, 
-    maxTriesPerSecond, enabledFlag),
+    double particleSize, double generationDuration, double minTriesPerSecond, double maxTriesPerSecond, 
+    std::shared_ptr<bool> enabledFlag)
+
+: ParticleGenerator(generationDuration, minTriesPerSecond, maxTriesPerSecond, 1.5, enabledFlag),
 position(pos),
 radius(radius),
 minLaunchSpeed(minLaunchSpeed),
@@ -31,11 +31,10 @@ particleColor(particleColor) {
 std::unique_ptr<Entity> 
 DustDiskParticleGenerator::generateParticle(double dt) { 
 
-    double angle = gaussianRand->mapRange(0., PI);
-    double module = gaussianRand->mapRange(-radius, radius); 
+    double angle = uniformRand->mapRange(0., 2*PI);
+    double module = gaussianRand->mapRange(0, radius); 
 
-    double absModule = std::abs(module);
-    absModule = (absModule > radius / 2.) ? radius - absModule : absModule;
+    double absModule = (module > radius / 2.) ? radius - module : module;
 
     double multiplier = 0.5 + (absModule / (radius/2)) * (2. - 0.5);
 

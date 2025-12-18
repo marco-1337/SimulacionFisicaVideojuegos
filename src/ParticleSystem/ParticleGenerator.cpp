@@ -2,17 +2,17 @@
 
 #include "ParticleSystem.hpp"
 
-ParticleGenerator::ParticleGenerator(double generationDuration, double generationProbability, double minTriesPerSecond, 
-    double maxTriesPerSecond, std::shared_ptr<bool> enabled)
+ParticleGenerator::ParticleGenerator(double generationDuration, double minTriesPerSecond, double maxTriesPerSecond, 
+    double gaussianDeviation, std::shared_ptr<bool> enabled)
+
 : FlaggedActivable(enabled), 
 random(std::make_shared<std::mt19937>()),
 generationDuration(generationDuration),
 timeAlive(0.),
 accumulatedTry(0.),
-generationProbability(generationProbability),
 minTriesPerSecond(minTriesPerSecond),
 maxTriesPerSecond(maxTriesPerSecond) {
-    gaussianRand = std::make_unique<GaussianRandomizer>(random);
+    gaussianRand = std::make_unique<GaussianRandomizer>(random, gaussianDeviation);
     uniformRand = std::make_unique<UniformRandomizer>(random);
 }
 
@@ -26,8 +26,9 @@ ParticleGenerator::generate(ParticleSystem& system, double dt) {
     accumulatedTry -= generationAttempts;
     
     for (int i = 0; i < generationAttempts; ++i) {
-        if (uniformRand->mapRange(0., 1.) < generationProbability) {
-            system.addParticle(generateParticle(dt));
+        if (std::unique_ptr<Entity> part = generateParticle(dt)) {
+            system.addParticle(std::move(part));
         }
+        else i = generationAttempts;
     }
 }

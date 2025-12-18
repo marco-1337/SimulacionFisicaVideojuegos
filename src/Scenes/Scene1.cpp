@@ -8,6 +8,8 @@
 #include "ProjectileParticleComponent.hpp"
 
 #include "GravityForceGenerator.hpp"
+#include "ExplosionForceGenerator.hpp"
+
 #include "DustDiskParticleGenerator.hpp"
 
 #include "consts.hpp"
@@ -31,7 +33,6 @@ Scene1::Scene1() {
     sceneEntities.addObject(std::move(axisElem));
 
     gravityForce = std::make_shared<GravityForceGenerator>(GRAVITY_FORCE);
-
     sceneForceGeneratorsRegistry.insert(gravityForce);
 
     particleSystems.push_back(ParticleSystem());
@@ -81,20 +82,23 @@ Scene1::keyPress(unsigned char key) {
         break;
 
         case 'J': {
+
+            dustSystem->registerForceGenerator(std::make_shared<ExplosionForceGenerator>(
+                addTimer(0.5), Vector3(0.), 2.5, 2.));
+
             dustSystem->addParticleGenerator(
                 std::make_unique<DustDiskParticleGenerator>(
                     Vector3(0.), 
                     2., // radio de disco
-                    2., //min upward launch speed
-                    6., // max upward launch speed 
+                    3., //min upward launch speed
+                    5., // max upward launch speed 
                     1., // min particle duration 
-                    3., // max particle duration
-                    Vector4(1.), // particle color
-                    0.3, // particle size 
-                    2., // generation duration 
-                    0.5, // generation probability per try 
-                    100., // min tries per second
-                    200. // max tries per second
+                    2., // max particle duration
+                    Vector4(1., 0., 1., 1.), // particle color
+                    0.1, // particle size 
+                    1., // generation duration 
+                    150., // min tries per second
+                    300. // max tries per second
                 )
             );
         }
